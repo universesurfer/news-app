@@ -1212,39 +1212,43 @@ export class MainComponent implements OnInit {
 
 
     //Iterating over the ARTICLE TITLES to see if they have country name from selected countries
-    // var newArray = _.map(combinedArray, 'description');
-    // console.log("Combined News API descriptions", newArray);
-    // let result =  event.map(function(word){
-    // 	return newArray.filter(function(article){
-    //     // console.log(article);
-    //   	return article.toString().indexOf(word) > -1;
-    //   });
-    // });
+    var newArray = _.map(combinedArray, 'description');
+    console.log("Combined News API descriptions", newArray);
+    let result =  event.map(function(word){
+    	return newArray.filter(function(article){
+        // console.log(article);
+        if (!article) {
+          return false;
+        } else {
+      	return article.toString().indexOf(word) > -1;
+      }
+      });
+    });
 
-    // let combinedBing = this.bingWorldJSON.value.concat(this.bingPoliticsJSON.value);
+    let combinedBing = this.bingWorldJSON.value.concat(this.bingPoliticsJSON.value);
 
 
 
     //SEARCHING BING NEWS DESCRIPTIONS FOR SELECTED COUNTRY KEYWORD, RETURN RESULT
     // let bingArray = _.pick(_.find('description', 'title', 'url'));
-    // let bingArray = _.map(combinedBing, 'description');
-    // let bingResult = event.map(function(word) {
-    //   return bingArray.filter(function(article) {
-    //     // console.log(article);
-    //     return article.toString().indexOf(word) > -1;
-    //   });
-    // });
+    let bingArray = _.map(combinedBing, 'description');
+    let bingResult = event.map(function(word) {
+      return bingArray.filter(function(article) {
+        // console.log(article);
+        return article.toString().indexOf(word) > -1;
+      });
+    });
 
 
     //Bing Api
     // //RETURNS ARTICLES MENTIONING AT LEAST 2 COUNTRIES, USING THEIR SEMANTICALLY EQUIVALENT KEYWORDS
-    // const bingMatches = bingArray.filter(
-    //   article => allArrayValues.every(
-    //     words => words.find(
-    //       word => article.toString().includes(word)
-    //     )
-    //   )
-    // );
+    const bingMatches = bingArray.filter(
+      article => allArrayValues.every(
+        words => words.find(
+          word => article.toString().includes(word)
+        )
+      )
+    );
 
 
     //News Api
@@ -1259,16 +1263,16 @@ export class MainComponent implements OnInit {
     );
 
     // Combine Articles of News API and Bing
-    // var allNews = newArray.concat(bingArray);
-    var allNews = newArray;
+    var allNews = newArray.concat(bingArray);
+    // var allNews = newArray;
     // console.log('Combined NEWS API and BING titles/descriptions', allNews);
 
 
     // console.log('articles with mentioning at least 2 countries from News API:');
     // console.log(newsApiMatches);
 
-    // const combinedMatches = bingMatches.concat(newsApiMatches);
-    const combinedMatches = newsApiMatches;
+    const combinedMatches = bingMatches.concat(newsApiMatches);
+    // const combinedMatches = newsApiMatches;
     // console.log("Combined Matches from Bing and News Api: ", combinedMatches);
 
 
@@ -1299,17 +1303,17 @@ export class MainComponent implements OnInit {
 
 
 
-    // for (let article of combinedBing) {
-    //   for (let match of combinedMatches) {
-    //     if (article.description == match) {
-    //       var bingArticleObject = { title: article.name, description: article.description, url: article.url, image: article.image.thumbnail.contentUrl, source: article.provider[0].name, date: article.datePublished };
-    //       //Push article objects to global array
-    //       this.bingApiMatches.push(bingArticleObject);
-    //       // console.log("Article url: ", article.url, "Article description: ", article.description);
-    //     }
-    //   }
+    for (let article of combinedBing) {
+      for (let match of combinedMatches) {
+        if (article.description == match) {
+          var bingArticleObject = { title: article.name, description: article.description, url: article.url, image: article.image.thumbnail.contentUrl, source: article.provider[0].name, date: article.datePublished };
+          //Push article objects to global array
+          this.bingApiMatches.push(bingArticleObject);
+          // console.log("Article url: ", article.url, "Article description: ", article.description);
+        }
+      }
 
-    // }
+    }
     // console.log("Seeing if Bing matches are pushing", this.bingApiMatches);
 
 
@@ -1355,23 +1359,23 @@ export class MainComponent implements OnInit {
       });
 
       // Return current news from Event Registry PR Newswire
-    this.newsAPI.getEventRegistryNewswire()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryNewswire = res;
-        console.log("PR Newswire - The Event Registry", this.eventRegistryNewswire);
-      });
-    });
+    // this.newsAPI.getEventRegistryNewswire()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryNewswire = res;
+    //     console.log("PR Newswire - The Event Registry", this.eventRegistryNewswire);
+    //   });
+    // });
 
 
     //Return current news from Event Registry Guardian
-    this.newsAPI.getEventRegistryGuardian()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryGuardian = res;
-        console.log("The Guardian - Event Registry", this.eventRegistryGuardian);
-      });
-    });
+    // this.newsAPI.getEventRegistryGuardian()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryGuardian = res;
+    //     console.log("The Guardian - Event Registry", this.eventRegistryGuardian);
+    //   });
+    // });
     //
     // Return current news from Event Registry CNN International
     this.newsAPI.getEventRegistryCNN()
@@ -1383,13 +1387,13 @@ export class MainComponent implements OnInit {
       });
 
     //Return current news from Event Registry Washington Post
-    this.newsAPI.getEventRegistryWAPO()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryWAPO = res;
-        console.log("Washington Post - Event Registry", this.eventRegistryWAPO);
-      });
-    });
+    // this.newsAPI.getEventRegistryWAPO()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryWAPO = res;
+    //     console.log("Washington Post - Event Registry", this.eventRegistryWAPO);
+    //   });
+    // });
 
     // Return current news from Event Registry Reuters
     this.newsAPI.getEventRegistryReuters()
@@ -1401,22 +1405,22 @@ export class MainComponent implements OnInit {
       });
     //
     // Return current news from Event Registry New York Times
-    this.newsAPI.getEventRegistryNYT()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryNYT = res;
-        console.log("NYT - Event Registry", this.eventRegistryNYT);
-      });
-    });
+    // this.newsAPI.getEventRegistryNYT()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryNYT = res;
+    //     console.log("NYT - Event Registry", this.eventRegistryNYT);
+    //   });
+    // });
 
     // Return current news from Event Registry Economist
-    this.newsAPI.getEventRegistryEconomist()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryEconomist = res;
-        console.log("Economist - Event Registry", this.eventRegistryEconomist);
-      });
-    });
+    // this.newsAPI.getEventRegistryEconomist()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryEconomist = res;
+    //     console.log("Economist - Event Registry", this.eventRegistryEconomist);
+    //   });
+    // });
 
     // Return current news from Event Registry Associated Press
     this.newsAPI.getEventRegistryAP()
@@ -1428,13 +1432,13 @@ export class MainComponent implements OnInit {
       });
 
     // //Return current news from Event Registry Wall Street Journal
-    this.newsAPI.getEventRegistryWSJ()
-    .subscribe((res: Response) => {
-      this.ngZone.run(() => {
-        this.eventRegistryWSJ = res;
-        console.log("Wall Street Journal - Event Registry", this.eventRegistryWSJ);
-      });
-    });
+    // this.newsAPI.getEventRegistryWSJ()
+    // .subscribe((res: Response) => {
+    //   this.ngZone.run(() => {
+    //     this.eventRegistryWSJ = res;
+    //     console.log("Wall Street Journal - Event Registry", this.eventRegistryWSJ);
+    //   });
+    // });
 
 
 
