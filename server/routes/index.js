@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-
-
-var angularLocal = 'localhost:4200';
+//
+//
+// var angularLocal = 'localhost:4200';
 /* GET home page. */
 
-router.get(angularLocal, function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function(req, res, next) {
+  res.render('index');
 });
 
 
